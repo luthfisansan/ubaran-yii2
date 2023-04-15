@@ -60,7 +60,7 @@
         </a>
         <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
-            <a class="collapse-item" href="Pasien.html">Pasien</a>
+            <a class="collapse-item" href="<?= Yii::$app->urlManager->createUrl(['PasienController/action']) ?>">Pasien</a>
             <a class="collapse-item" href="cards.html">Transaksi</a>
             <a class="collapse-item" href="cards.html">Pembayaran</a>
           </div>
