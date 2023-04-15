@@ -30,9 +30,18 @@ $this->params['breadcrumbs'][] = $this->title;
         'model' => $model,
         'attributes' => [
             'id',
-            'pasien_id',
-            'tindakan_id',
-            'obat_id',
+            [
+                'attribute' => 'pasien_id',
+                'value' => $model->pasien->nama, // Menampilkan nama pasien
+            ],
+            [
+                'attribute' => 'tindakan_id',
+                'value' => $model->tindakan->nama, // Menampilkan nama tindakan
+            ],
+            [
+                'attribute' => 'obat_id',
+                'value' => $model->obat->nama, // Menampilkan nama obat
+            ],
             'jumlah',
             'total_harga',
         ],

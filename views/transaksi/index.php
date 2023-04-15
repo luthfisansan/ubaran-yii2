@@ -20,26 +20,38 @@ $this->params['breadcrumbs'][] = $this->title;
         <?= Html::a('Create Transaksi', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
-
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
-
             'id',
-            'pasien_id',
-            'tindakan_id',
-            'obat_id',
+            [
+                'attribute' => 'pasien_id',
+                'value' => function ($model) {
+                    return $model->pasien->nama; // Display nama of pasien
+                }
+            ],
+            [
+                'attribute' => 'tindakan_id',
+                'value' => function ($model) {
+                    return $model->tindakan->nama; // Display nama of tindakan
+                }
+            ],
+            [
+                'attribute' => 'obat_id',
+                'value' => function ($model) {
+                    return $model->obat->nama; // Display nama of obat
+                }
+            ],
             'jumlah',
             //'total_harga',
             [
                 'class' => ActionColumn::className(),
-                'urlCreator' => function ($action, transaksi $model, $key, $index, $column) {
+                'urlCreator' => function ($action, $model, $key, $index, $column) {
                     return Url::toRoute([$action, 'id' => $model->id]);
                 }
             ],
         ],
     ]); ?>
-
 
 </div>

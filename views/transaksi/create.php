@@ -1,9 +1,11 @@
 <?php
 
 use yii\helpers\Html;
+use yii\widgets\ActiveForm;
 
 /** @var yii\web\View $this */
-/** @var app\models\transaksi $model */
+/** @var app\models\Transaksi $model */
+/** @var yii\widgets\ActiveForm $form */
 
 $this->title = 'Create Transaksi';
 $this->params['breadcrumbs'][] = ['label' => 'Transaksis', 'url' => ['index']];

@@ -7,6 +7,10 @@ use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use app\controllers\Obat;
+use app\controllers\Tindakan;
+use app\models\Obat as ModelsObat;
+use app\models\tindakan as ModelsTindakan;
 
 /**
  * TransaksiController implements the CRUD actions for transaksi model.
@@ -77,11 +81,18 @@ class TransaksiController extends Controller
      */
     public function actionCreate()
     {
-        $model = new transaksi();
+        $model = new Transaksi();
 
         if ($this->request->isPost) {
-            if ($model->load($this->request->post()) && $model->save()) {
-                return $this->redirect(['view', 'id' => $model->id]);
+            if ($model->load($this->request->post())) {
+                // Menghitung total harga berdasarkan harga obat dan tindakan
+                $hargaObat = ModelsObat::findOne($model->obat_id)->harga;
+                $hargaTindakan = ModelsTindakan::findOne($model->tindakan_id)->harga;
+                $model->total_harga = ($hargaObat + $hargaTindakan) * $model->jumlah;
+
+                if ($model->save()) {
+                    return $this->redirect(['view', 'id' => $model->id]);
+                }
             }
         } else {
             $model->loadDefaultValues();
@@ -91,6 +102,7 @@ class TransaksiController extends Controller
             'model' => $model,
         ]);
     }
+
 
     /**
      * Updates an existing transaksi model.
@@ -111,6 +123,8 @@ class TransaksiController extends Controller
             'model' => $model,
         ]);
     }
+
+
 
     /**
      * Deletes an existing transaksi model.
