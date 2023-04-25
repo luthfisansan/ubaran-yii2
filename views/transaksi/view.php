@@ -4,12 +4,11 @@ use yii\helpers\Html;
 use yii\widgets\DetailView;
 
 /** @var yii\web\View $this */
-/** @var app\models\transaksi $model */
+/** @var app\models\Transaksi $model */
 
-$this->title = $model->id;
+$this->title = 'Transaksi #' . $model->id;
 $this->params['breadcrumbs'][] = ['label' => 'Transaksis', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
-\yii\web\YiiAsset::register($this);
 ?>
 <div class="transaksi-view">
 
@@ -32,15 +31,21 @@ $this->params['breadcrumbs'][] = $this->title;
             'id',
             [
                 'attribute' => 'pasien_id',
-                'value' => $model->pasien->nama, // Menampilkan nama pasien
+                'value' => function ($model) {
+                    return $model->pasien->nama; // Display nama of pasien
+                }
             ],
             [
                 'attribute' => 'tindakan_id',
-                'value' => $model->tindakan->nama, // Menampilkan nama tindakan
+                'value' => function ($model) {
+                    return $model->tindakan->nama; // Display nama of tindakan
+                }
             ],
             [
                 'attribute' => 'obat_id',
-                'value' => $model->obat->nama, // Menampilkan nama obat
+                'value' => function ($model) {
+                    return $model->obat->nama; // Display nama of obat
+                }
             ],
             'jumlah',
             'total_harga',

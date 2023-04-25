@@ -8,6 +8,9 @@ use yii\web\IdentityInterface;
 
 class User extends ActiveRecord implements IdentityInterface
 {
+    const ROLE_USER = 10;
+    const ROLE_ADMIN = 20;
+
     /**
      * @inheritdoc
      */
@@ -80,6 +83,7 @@ class User extends ActiveRecord implements IdentityInterface
         return [
             [['username', 'password_hash', 'email'], 'required'],
             [['username', 'password_hash', 'email'], 'string', 'max' => 255],
+            ['role', 'default', 'value' => 10], ['role', 'in', 'range' => [self::ROLE_USER, self::ROLE_ADMIN]],
         ];
     }
 
@@ -104,5 +108,20 @@ class User extends ActiveRecord implements IdentityInterface
     public function getUserRoles()
     {
         return $this->hasMany(UserRole::class, ['user_id' => 'id']);
+    }
+
+
+
+
+
+    public static function isUserAdmin($username)
+    {
+        if (static::findOne(['username' => $username, 'role' => self::ROLE_ADMIN])) {
+
+            return true;
+        } else {
+
+            return false;
+        }
     }
 }

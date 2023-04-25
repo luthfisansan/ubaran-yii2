@@ -8,7 +8,7 @@ use yii\widgets\ActiveForm;
 /** @var yii\widgets\ActiveForm $form */
 
 $this->title = 'Create Transaksi';
-$this->params['breadcrumbs'][] = ['label' => 'Transaksis', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => 'Transaksi', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="transaksi-create">

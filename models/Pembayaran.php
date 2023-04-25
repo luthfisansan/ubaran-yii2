@@ -45,7 +45,7 @@ class Pembayaran extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'pasien_id' => 'Pasien ID',
+            'pasien_id' => 'Nama Pasien',
             'total_harga' => 'Total Harga',
             'tanggal_bayar' => 'Tanggal Bayar',
         ];

@@ -50,11 +50,11 @@ class transaksi extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'pasien_id' => 'Pasien ID',
-            'tindakan_id' => 'Tindakan ID',
-            'obat_id' => 'Obat ID',
+            'pasien_id' => 'Nama Pasien',
+            'tindakan_id' => 'Nama Tindakan',
+            'obat_id' => 'Nama Obat',
             'jumlah' => 'Jumlah',
-            'total_harga' => 'Total Harga',
+
         ];
     }
 
