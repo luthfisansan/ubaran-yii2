@@ -10,15 +10,27 @@ $config = [
     'aliases' => [
         '@bower' => '@vendor/bower-asset',
         '@npm'   => '@vendor/npm-asset',
-
     ],
     'components' => [
-        // 'modules' => [
-        //     'gii' => [
-        //         'class' => 'yii\gii\Module',
-        //         'allowedIPs' => ['127.0.0.1', '::1'], // Konfigurasi IP yang diizinkan untuk mengakses Gii
-        //     ],
-        // ],
+        'authManager' => [
+            'class' => 'yii\rbac\DbManager',
+            'defaultRoles' => ['guest'], // or use 'yii\rbac\DbManager'
+        ],
+        'assetManager' => [
+            'bundles' => [
+                'dosamigos\datepicker\DatePickerAsset' => [
+                    'sourcePath' => null,
+                    'basePath' => '@webroot',
+                    'baseUrl' => '@web',
+                    'js' => [
+                        'js/bootstrap-datepicker.min.js',
+                    ],
+                    'css' => [
+                        'css/bootstrap-datepicker3.css',
+                    ],
+                ],
+            ],
+        ],
         'request' => [
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
             'cookieValidationKey' => '190104',
@@ -48,14 +60,7 @@ $config = [
                 ],
             ],
         ],
-        'user' => [
-            'identityClass' => 'app\models\User',
-            // konfigurasi lainnya
-        ],
-
-
         'db' => $db,
-
         'urlManager' => [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
@@ -67,9 +72,14 @@ $config = [
                 'user/delete/<id:\d+>' => 'user/delete',
             ],
         ],
-
     ],
     'params' => $params,
+    'modules' => [
+        'admin' => [
+            'layout' => 'left-menu',
+            'mainLayout' => '@app/views/layouts/main.php',
+        ],
+    ],
 ];
 
 if (YII_ENV_DEV) {
@@ -78,14 +88,13 @@ if (YII_ENV_DEV) {
     $config['modules']['debug'] = [
         'class' => 'yii\debug\Module',
         // uncomment the following to add your IP if you are not connecting from localhost.
-        //'allowedIPs' => ['127.0.0.1', '::1'],
     ];
 
     $config['bootstrap'][] = 'gii';
     $config['modules']['gii'] = [
         'class' => 'yii\gii\Module',
         // uncomment the following to add your IP if you are not connecting from localhost.
-        //'allowedIPs' => ['127.0.0.1', '::1'],
+
     ];
 }
 

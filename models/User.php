@@ -11,6 +11,9 @@ class User extends ActiveRecord implements IdentityInterface
     const ROLE_USER = 10;
     const ROLE_ADMIN = 20;
 
+    public $role;
+    public $auth_key; //tambahkan properti auth_key
+
     /**
      * @inheritdoc
      */
@@ -27,11 +30,16 @@ class User extends ActiveRecord implements IdentityInterface
         return static::findOne(['access_token' => $token]);
     }
 
+    /**
+     * Finds user by username
+     *
+     * @param string $username
+     * @return static|null
+     */
     public static function findByUsername($username)
     {
         return static::findOne(['username' => $username]);
     }
-
 
     /**
      * @inheritdoc
@@ -83,7 +91,7 @@ class User extends ActiveRecord implements IdentityInterface
         return [
             [['username', 'password_hash', 'email'], 'required'],
             [['username', 'password_hash', 'email'], 'string', 'max' => 255],
-            ['role', 'default', 'value' => 10], ['role', 'in', 'range' => [self::ROLE_USER, self::ROLE_ADMIN]],
+            [['auth_key'], 'string', 'max' => 32] //tambahkan aturan validasi untuk properti auth_key
         ];
     }
 
@@ -97,6 +105,7 @@ class User extends ActiveRecord implements IdentityInterface
             'username' => 'Username',
             'password_hash' => 'Password Hash',
             'email' => 'Email',
+            'auth_key' => 'Auth Key' //tambahkan label untuk properti auth_key
         ];
     }
 
@@ -105,23 +114,26 @@ class User extends ActiveRecord implements IdentityInterface
      *
      * @return \yii\db\ActiveQuery
      */
-    public function getUserRoles()
-    {
-        return $this->hasMany(UserRole::class, ['user_id' => 'id']);
-    }
 
 
-
-
-
+    /**
+     * Check whether a user is an admin
+     *
+     * @param string $username
+     * @return bool
+     */
     public static function isUserAdmin($username)
     {
-        if (static::findOne(['username' => $username, 'role' => self::ROLE_ADMIN])) {
+        $user = static::findOne(['username' => $username]);
 
-            return true;
-        } else {
+        return $user && $user->role == self::ROLE_ADMIN;
+    }
 
-            return false;
-        }
+    /**
+     * Generate auth key for the user
+     */
+    public function generateAuthKey()
+    {
+        $this->auth_key = Yii::$app->security->generateRandomString(32);
     }
 }

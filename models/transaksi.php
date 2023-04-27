@@ -3,6 +3,8 @@
 namespace app\models;
 
 use Yii;
+use yii\behaviors\TimestampBehavior;
+use yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "transaksi".
@@ -13,12 +15,13 @@ use Yii;
  * @property int $obat_id
  * @property int $jumlah
  * @property float $total_harga
+ * @property string $tanggal_transaksi
  *
  * @property Obat $obat
  * @property Pasien $pasien
  * @property Tindakan $tindakan
  */
-class transaksi extends \yii\db\ActiveRecord
+class Transaksi extends ActiveRecord
 {
     /**
      * {@inheritdoc}
@@ -37,9 +40,19 @@ class transaksi extends \yii\db\ActiveRecord
             [['pasien_id', 'tindakan_id', 'obat_id', 'jumlah', 'total_harga'], 'required'],
             [['pasien_id', 'tindakan_id', 'obat_id', 'jumlah'], 'integer'],
             [['total_harga'], 'number'],
-            [['obat_id'], 'exist', 'skipOnError' => true, 'targetClass' => Obat::class, 'targetAttribute' => ['obat_id' => 'id']],
-            [['pasien_id'], 'exist', 'skipOnError' => true, 'targetClass' => Pasien::class, 'targetAttribute' => ['pasien_id' => 'id']],
-            [['tindakan_id'], 'exist', 'skipOnError' => true, 'targetClass' => Tindakan::class, 'targetAttribute' => ['tindakan_id' => 'id']],
+            [['tanggal_transaksi'], 'safe'],
+            [
+                ['obat_id'], 'exist', 'skipOnError' => true,
+                'targetClass' => Obat::class, 'targetAttribute' => ['obat_id' => 'id']
+            ],
+            [
+                ['pasien_id'], 'exist', 'skipOnError' => true,
+                'targetClass' => Pasien::class, 'targetAttribute' => ['pasien_id' => 'id']
+            ],
+            [
+                ['tindakan_id'], 'exist', 'skipOnError' => true,
+                'targetClass' => Tindakan::class, 'targetAttribute' => ['tindakan_id' => 'id']
+            ],
         ];
     }
 
@@ -54,7 +67,8 @@ class transaksi extends \yii\db\ActiveRecord
             'tindakan_id' => 'Nama Tindakan',
             'obat_id' => 'Nama Obat',
             'jumlah' => 'Jumlah',
-
+            'total_harga' => 'Total Harga',
+            'tanggal_transaksi' => 'Tanggal Transaksi',
         ];
     }
 
@@ -86,5 +100,23 @@ class transaksi extends \yii\db\ActiveRecord
     public function getTindakan()
     {
         return $this->hasOne(Tindakan::class, ['id' => 'tindakan_id']);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function behaviors()
+    {
+        return [
+            [
+                'class' => TimestampBehavior::class,
+                'attributes' => [
+                    ActiveRecord::EVENT_BEFORE_INSERT => ['tanggal_transaksi'],
+                ],
+                'value' => function () {
+                    return date('Y-m-d');
+                },
+            ],
+        ];
     }
 }

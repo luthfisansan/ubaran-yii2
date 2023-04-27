@@ -3,7 +3,7 @@
 use yii\db\Migration;
 
 /**
- * Class m230408_231824_Transaksi_migration
+ * Class m230408_231824_Transaksi_table
  */
 class m230408_231824_Transaksi_table extends Migration
 {
@@ -16,7 +16,7 @@ class m230408_231824_Transaksi_table extends Migration
             'obat_id' => $this->integer()->notNull(),
             'jumlah' => $this->integer()->notNull(),
             'total_harga' => $this->decimal(10, 2)->notNull(),
-
+            'tanggal_transaksi' => $this->date()->notNull(), // Tambahkan baris ini
         ]);
 
         $this->addForeignKey(

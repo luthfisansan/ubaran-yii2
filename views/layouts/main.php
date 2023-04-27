@@ -47,7 +47,7 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
                 ['label' => 'Tindakan', 'url' => ['/tindakan/index']],
                 ['label' => 'Obat', 'url' => ['/obat/index']],
                 ['label' => 'Transaksi', 'url' => ['/transaksi/index']],
-                ['label' => 'Laporan', 'url' => ['/pegawai/Index']],
+                ['label' => 'Laporan', 'url' => ['/chart/index']],
 
 
                 Yii::$app->user->isGuest
