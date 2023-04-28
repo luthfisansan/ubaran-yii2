@@ -8,12 +8,8 @@ use yii\web\IdentityInterface;
 
 class User extends ActiveRecord implements IdentityInterface
 {
-    const ROLE_USER = 10;
-    const ROLE_ADMIN = 20;
-
-    public $role;
-    public $auth_key; //tambahkan properti auth_key
-
+    public $auth_key;
+    public $password;
     /**
      * @inheritdoc
      */
@@ -91,8 +87,21 @@ class User extends ActiveRecord implements IdentityInterface
         return [
             [['username', 'password_hash', 'email'], 'required'],
             [['username', 'password_hash', 'email'], 'string', 'max' => 255],
-            [['auth_key'], 'string', 'max' => 32] //tambahkan aturan validasi untuk properti auth_key
+            [['auth_key'], 'string', 'max' => 32],
+            [['password'], 'required', 'on' => ['create']],
+            [['password'], 'string', 'min' => 6],
         ];
+    }
+
+    public function beforeSave($insert)
+    {
+        if (parent::beforeSave($insert)) {
+            if ($this->isNewRecord || $this->isAttributeChanged('password')) {
+                $this->password_hash = Yii::$app->security->generatePasswordHash($this->password);
+            }
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -122,13 +131,6 @@ class User extends ActiveRecord implements IdentityInterface
      * @param string $username
      * @return bool
      */
-    public static function isUserAdmin($username)
-    {
-        $user = static::findOne(['username' => $username]);
-
-        return $user && $user->role == self::ROLE_ADMIN;
-    }
-
     /**
      * Generate auth key for the user
      */
