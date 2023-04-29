@@ -14,7 +14,7 @@ class m230408_231401_User_table extends Migration
             'username' => $this->string(255)->notNull(),
             'password_hash' => $this->string(255)->notNull(),
             'email' => $this->string(255)->notNull(),
-            // tambahkan kolom-kolom lain yang diperlukan
+
         ]);
         // Data username dan password hash
         $username = 'user1';
@@ -23,7 +23,23 @@ class m230408_231401_User_table extends Migration
             'username' => $username,
             'password_hash' => $passwordHash,
             'email' => 'user1@example.com',
-            // set nilai kolom lain yang diperlukan
+
+        ]);
+        $username = 'user2';
+        $passwordHash = Yii::$app->security->generatePasswordHash('password123');
+        $this->insert('user', [
+            'username' => $username,
+            'password_hash' => $passwordHash,
+            'email' => 'user2@example.com',
+
+        ]);
+        $username = 'user3';
+        $passwordHash = Yii::$app->security->generatePasswordHash('password123');
+        $this->insert('user', [
+            'username' => $username,
+            'password_hash' => $passwordHash,
+            'email' => 'user3@example.com',
+
         ]);
     }
 
